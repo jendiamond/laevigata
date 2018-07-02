@@ -13,6 +13,9 @@
             <div v-if="input.label === 'School'">
               <school></school>
             </div>
+            <div v-if="input.label === 'Langauge'">
+              <Language></Language>
+            </div>
             <div v-else>
               <label>{{ input.label }}</label>
               <input class="form-control" :name="etdPrefix(index)" v-model="input.value">
@@ -31,6 +34,7 @@ import axios from "axios"
 import VueAxios from "vue-axios"
 import { formStore } from "./form_store"
 import School from "./school"
+import Language from "./Language"
 
 let token = document
   .querySelector('meta[name="csrf-token"]')
@@ -45,7 +49,8 @@ export default {
     }
   },
   components: {
-    school: School
+    school: School,
+    language: Language
   },
   methods: {
     etdPrefix(index) {
