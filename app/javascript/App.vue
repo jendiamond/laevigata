@@ -118,7 +118,8 @@ export default {
       },
       errored: false,
       errors: [],
-      lastCompletedStep: 0
+      lastCompletedStep: 0,
+      SavedData: {}
     }
   },
   components: {
@@ -135,6 +136,28 @@ export default {
     primaryFileUploader: PrimaryFileUploader,
     copyrightQuestions: CopyrightQuestions,
     embargo: Embargo
+  },
+  mounted: function () {
+    var el = document.getElementById('saved_data');
+    this.SavedData = JSON.parse(el.dataset.inProgressEtd);
+    //var valid_tabs = this.form.tabs.entries();
+
+    for (var tab in this.form.tabs){
+    //   //Object.keys(this.form.tabs[tab].inputs)
+       if (!this.form.tabs[tab].disabled){
+         console.log('hey many keys', Object.keys(this.form.tabs[tab].inputs))
+         for (var thing in Object.keys(this.form.tabs[tab].inputs)){
+           console.log('hey one key', Object.keys(this.form.tabs[tab].inputs[thing]))
+         }
+
+       }
+      //for (var key in Object.keys(this.form.tabs[tab].inputs)){
+        // if (this.form.tabs[tab].inputs[key].value){
+        //   //console.log(this.SavedData[input])
+        //   this.form.tabs[tab].inputs[input].value.push(this.SavedData[input])
+        // }
+      //}
+    }
   },
   methods: {
     // tabs that have been validated and the current tab are enabled
