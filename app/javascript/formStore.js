@@ -226,5 +226,22 @@ export var formStore = {
     axios.get(this.subfieldEndpoints[this.selectedDepartment]).then(response => {
       this.subfields = response.data
     })
+  },
+  loadSavedData(data){
+    this.tabs.about_me.inputs.creator.value = data['creator']
+    for (var tab in this.tabs){
+       if (!this.tabs[tab].disabled){
+         var input_keys = Object.keys(this.tabs[tab].inputs)
+          input_keys.forEach(function(el){
+            if (this.tabs[tab].inputs[el].value.isArray) {
+              console.log(this.tabs[tab].inputs[el].value)
+              //TODO: find best way to mark selected
+              this.tabs[tab].inputs[el].value.push(data[el])
+            } else {
+              this.tabs[tab].inputs[el].value = data[el]
+            }
+          }, this)
+       }
+    }
   }
 }
