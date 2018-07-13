@@ -1,6 +1,12 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  resources :submissions do
+    member do
+      get 'complete'
+    end
+  end if Flipflop.old_school_ui?
+
   mount Blacklight::Engine => '/'
 
   concern :searchable, Blacklight::Routes::Searchable.new

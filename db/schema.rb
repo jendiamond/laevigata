@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180627152109) do
+ActiveRecord::Schema.define(version: 20180707204039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -483,6 +483,34 @@ ActiveRecord::Schema.define(version: 20180627152109) do
     t.boolean "active"
     t.boolean "allows_access_grant"
     t.index ["permission_template_id", "name"], name: "index_sipity_workflows_on_permission_template_and_name", unique: true
+  end
+
+  create_table "submissions", force: :cascade do |t|
+    t.string "creator"
+    t.string "graduation_date"
+    t.string "school"
+    t.string "post_graduation_email"
+    t.string "department"
+    t.string "subfield"
+    t.string "partnering_agency"
+    t.string "degree"
+    t.string "submitting_type"
+    t.string "committee_chair"
+    t.string "committee_members"
+    t.string "title"
+    t.string "language"
+    t.string "abstract"
+    t.string "table_of_contents"
+    t.string "research_field"
+    t.string "keyword"
+    t.string "requires_permissions"
+    t.string "copyrights"
+    t.string "patents"
+    t.string "embargo_length"
+    t.string "embargo_type"
+    t.string "agreement"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "tinymce_assets", id: :serial, force: :cascade do |t|
