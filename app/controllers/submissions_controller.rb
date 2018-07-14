@@ -40,6 +40,33 @@ class SubmissionsController < ApplicationController
   # GET /submissions/1/complete
   def complete
     byebug
+
+    etd = Etd.new
+    etd.depositor = current_user.user_key
+
+    # loop through copying attributes
+
+    ability = ::Ability.new(current_user)
+    file1_path = "#{::Rails.root}/spec/fixtures/joey/joey_thesis.pdf"
+    file2_path = "#{::Rails.root}/spec/fixtures/miranda/image.tif"
+    upload1 = File.open(file1_path) { |file1|
+      Hyrax::UploadedFile.create(user: user, file: file1, pcdm_use: 'primary')
+    }
+    upload2 = File.open(file2_path) { |file2|
+      Hyrax::UploadedFile.create(
+          user: user,
+          file: file2,
+          pcdm_use: 'supplementary',
+          description: 'Description of the supplementary file',
+          file_type: 'Image'
+      )
+    }
+
+    attributes_for_actor = { uploaded_files: [upload1.id, upload2.id] }
+    env = Hyrax::Actors::Environment.new(etd, ability, attributes_for_actor)
+    middleware = Hyrax::DefaultMiddlewareStack.build_stack.build(Hyrax::Actors::Terminator.new)
+    middleware.create(env)
+
   end
 
   # PATCH/PUT /submissions/1
