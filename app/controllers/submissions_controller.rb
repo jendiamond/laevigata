@@ -39,22 +39,48 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/1/complete
   def complete
-    byebug
 
     etd = Etd.new
     etd.depositor = current_user.user_key
+    etd.email = [current_user.email] #??? do we currently store e-mail & is this the right thing to do?
 
     # loop through copying attributes
+    etd.title = [@submission.title]
+    etd.graduation_date = [@submission.graduation_date]
+    etd.keyword = [@submission.keyword]
+    etd.post_graduation_email = [@submission.post_graduation_email]
+    etd.files_embargoed = true # need to adjust for multiple embargo types
+    etd.abstract_embargoed = false # need to adjust for multiple embargo types
+    etd.toc_embargoed = false # need to adjust for multiple embargo types
+    etd.embargo_length = @submission.embargo_length
+    etd.department = [@submission.department]
+    etd.school = [@submission.school]
+    etd.subfield = [@submission.subfield]
+    etd.degree = [@submission.degree]
+    etd.abstract = [@submission.abstract]
+    etd.creator = [@submission.creator]
+    etd.language = [@submission.language]
+    etd.other_copyrights = @submission.copyrights
+    etd.requires_permissions = @submission.requires_permissions
+    etd.patents = @submission.patents
+    etd.partnering_agency = [@submission.partnering_agency]
+    etd.research_field = [@submission.research_field]
+    etd.submitting_type = [@submission.submitting_type]
+
+    etd.committee_chair.build(name: [@submission.committee_chair], affiliation: ["Emory University"])
+    etd.committee_members.build(name: [@submission.committee_members], affiliation: ["Emory University"])
+
+    etd.save
 
     ability = ::Ability.new(current_user)
     file1_path = "#{::Rails.root}/spec/fixtures/joey/joey_thesis.pdf"
     file2_path = "#{::Rails.root}/spec/fixtures/miranda/image.tif"
     upload1 = File.open(file1_path) { |file1|
-      Hyrax::UploadedFile.create(user: user, file: file1, pcdm_use: 'primary')
+      Hyrax::UploadedFile.create(user: current_user, file: file1, pcdm_use: 'primary')
     }
     upload2 = File.open(file2_path) { |file2|
       Hyrax::UploadedFile.create(
-          user: user,
+          user: current_user,
           file: file2,
           pcdm_use: 'supplementary',
           description: 'Description of the supplementary file',
@@ -66,6 +92,8 @@ class SubmissionsController < ApplicationController
     env = Hyrax::Actors::Environment.new(etd, ability, attributes_for_actor)
     middleware = Hyrax::DefaultMiddlewareStack.build_stack.build(Hyrax::Actors::Terminator.new)
     middleware.create(env)
+
+    @submission.delete #if the full middleware was successful - this maybe needs to be added to the actor stack :(
 
   end
 
