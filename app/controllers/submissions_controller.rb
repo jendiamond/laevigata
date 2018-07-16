@@ -66,15 +66,21 @@ class SubmissionsController < ApplicationController
     etd.partnering_agency = [@submission.partnering_agency]
     etd.research_field = [@submission.research_field]
     etd.submitting_type = [@submission.submitting_type]
+    etd.table_of_contents = [@submission.table_of_contents]
 
     etd.committee_chair.build(name: [@submission.committee_chair], affiliation: ["Emory University"])
     etd.committee_members.build(name: [@submission.committee_members], affiliation: ["Emory University"])
 
+    file1_path = @submission.primary_pdf_file.current_path
+    file2_path = @submission.supplemental_file.current_path
+
     etd.save
 
+    byebug
+
     ability = ::Ability.new(current_user)
-    file1_path = "#{::Rails.root}/spec/fixtures/joey/joey_thesis.pdf"
-    file2_path = "#{::Rails.root}/spec/fixtures/miranda/image.tif"
+    # file1_path = "#{::Rails.root}/spec/fixtures/joey/joey_thesis.pdf"
+    # file2_path = "#{::Rails.root}/spec/fixtures/miranda/image.tif"
     upload1 = File.open(file1_path) { |file1|
       Hyrax::UploadedFile.create(user: current_user, file: file1, pcdm_use: 'primary')
     }
@@ -93,7 +99,7 @@ class SubmissionsController < ApplicationController
     middleware = Hyrax::DefaultMiddlewareStack.build_stack.build(Hyrax::Actors::Terminator.new)
     middleware.create(env)
 
-    @submission.delete #if the full middleware was successful - this maybe needs to be added to the actor stack :(
+    # @submission.delete #if the full middleware was successful - this maybe needs to be added to the actor stack :(
 
   end
 

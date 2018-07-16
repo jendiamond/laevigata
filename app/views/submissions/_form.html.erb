@@ -26,7 +26,8 @@
         </span>
 
         <span class="col-sm-3">
-          <%= form.text_field field %>
+          <%= form.text_field field unless group == "My Files"%>
+          <%= form.file_field field if     group == "My Files"%>
         </span>
       </div>
 

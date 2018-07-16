@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180707204039) do
+ActiveRecord::Schema.define(version: 20180716013844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -511,6 +511,8 @@ ActiveRecord::Schema.define(version: 20180707204039) do
     t.string "agreement"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "primary_pdf_file"
+    t.string "supplemental_file"
   end
 
   create_table "tinymce_assets", id: :serial, force: :cascade do |t|

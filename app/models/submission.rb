@@ -1,4 +1,7 @@
 class Submission < ApplicationRecord
+  mount_uploader :primary_pdf_file, EtdFileUploader
+  mount_uploader :supplemental_file, EtdFileUploader
+
   SAVED_ATTRIBUTES = [
       ['My ETD', [
       :creator,
@@ -32,6 +35,8 @@ class Submission < ApplicationRecord
 
       ['My Files', [
       # handle these separately
+      :primary_pdf_file,
+      :supplemental_file
       ]],
 
       ['Embargo', [
