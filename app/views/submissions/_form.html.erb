@@ -12,10 +12,11 @@
   <% end %>
 
 
-  <% Submission::SAVED_ATTRIBUTES.each do |group, fields| %>
+  <% Submission::SAVED_ATTRIBUTES.each_with_index do |section, index| -%>
+    <% group_label, fields = section -%>
 
     <div class="row">
-      <h2><%= group %></h2>
+      <h2><%= group_label.to_s.titleize %></h2>
     </div>
 
     <% fields.each do |field| %>
@@ -26,16 +27,18 @@
         </span>
 
         <span class="col-sm-3">
-          <%= form.text_field field unless group == "My Files"%>
-          <%= form.file_field field if     group == "My Files"%>
+          <%= form.text_field field unless group_label == "My Files"%>
+          <%= form.file_field field if     group_label == "My Files"%>
         </span>
       </div>
 
     <% end %>
 
+    <div class="actions">
+      <%= form.hidden_field :current_section, value: index %>
+      <%= form.submit %>
+    </div>
+
   <% end %>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
 <% end %>

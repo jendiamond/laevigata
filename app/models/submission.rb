@@ -3,47 +3,49 @@ class Submission < ApplicationRecord
   mount_uploader :supplemental_file, EtdFileUploader
 
   SAVED_ATTRIBUTES = [
-      ['My ETD', [
+      [:about_me, [
       :creator,
       :graduation_date,
       :school,
       :post_graduation_email]],
 
-      ['My Program', [
+      [:my_program, [
       :department,
       :subfield,
       :partnering_agency,
       :degree,
       :submitting_type]],
 
-      ['My Advisor', [
+      [:my_advisor, [
       :committee_chair,
       :committee_members]],
 
-      ['My ETD', [
+      [:abstract, [
       :title,
       :language,
       :abstract,
       :table_of_contents]],
 
-      ['Keywords & Copyright', [
+      [:keywords, [
       :research_field,
       :keyword,
       :requires_permissions,
       :copyrights,
       :patents]],
 
-      ['My Files', [
+      [:my_files, [
       # handle these separately
       :primary_pdf_file,
-      :supplemental_file
-      ]],
+      :supplemental_file]],
 
-      ['Embargo', [
+      [:embargo, [
       :embargo_length,
-      :embargo_type,
+      :embargo_type]],
 
-      # Submission
+      [:review, [
       :agreement]]
-  ]
+  ].freeze
+
+  steps = Submission::SAVED_ATTRIBUTES.map{ |step, fields| step }.freeze
+
 end
