@@ -55,3 +55,18 @@
     }
 }
 
+a.nav-link {
+  .active:before {
+    content: "\e092";
+    font-family: 'Glyphicons Halflings';
+    padding-right: 5px;
+  }
+
+  complete:before {
+    content: "\e013";
+    font-family: 'Glyphicons Halflings';
+    padding-right: 5px;
+  }
+
+
+}

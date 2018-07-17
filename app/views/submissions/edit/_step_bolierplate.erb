@@ -1,0 +1,46 @@
+<%= form_for @submission, url: wizard_path, method: :put do |form| %>
+  <% if @submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+        <% @submission.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <% group, fields = Submission::SAVED_ATTRIBUTES.assoc(step) -%>
+
+  <div class="row">
+    <h2><%= group.to_s.titleize %></h2>
+
+    <% fields.each do |field| %>
+
+      <div class="field row">
+        <span class="col-sm-2">
+          <%= form.label field %>:
+        </span>
+
+        <span class="col-sm-3">
+          <% if group == :my_files %>
+            <%= form.file_field field -%>
+            <%= @submission.send((field.to_s + '_identifier').to_sym) %>
+            <%= form.hidden_field (field.to_s + '_cache').to_sym %>
+          <% else %>
+            <%= form.text_field field %>
+          <% end %>
+        </span>
+      </div>
+
+    <% end %>
+
+    <div class="actions">
+      <%= form.submit "Continue" %>
+    </div>
+
+  </div>
+
+<% end %>

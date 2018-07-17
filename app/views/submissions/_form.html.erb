@@ -27,8 +27,11 @@
         </span>
 
         <span class="col-sm-3">
-          <%= form.text_field field unless group_label == "My Files"%>
-          <%= form.file_field field if     group_label == "My Files"%>
+          <%= form.text_field field unless group_label == :my_files %>
+          <% if group_label == :my_files %>
+            <%= form.file_field field %>
+            <%= form.hidden_field (field.to_s + '_cache').to_sym %>
+          <% end %>
         </span>
       </div>
 

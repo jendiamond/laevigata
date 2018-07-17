@@ -14,7 +14,8 @@ class SubmissionsController < ApplicationController
 
   # GET /submissions/new
   def new
-    @submission = Submission.new
+    @submission = Submission.create
+    redirect_to "/submissions/#{@submission.id}/deposit", submission: @submission
   end
 
   # GET /submissions/1/edit
@@ -76,8 +77,6 @@ class SubmissionsController < ApplicationController
 
     etd.save
 
-    byebug
-
     ability = ::Ability.new(current_user)
     # file1_path = "#{::Rails.root}/spec/fixtures/joey/joey_thesis.pdf"
     # file2_path = "#{::Rails.root}/spec/fixtures/miranda/image.tif"
@@ -100,6 +99,9 @@ class SubmissionsController < ApplicationController
     middleware.create(env)
 
     # @submission.delete #if the full middleware was successful - this maybe needs to be added to the actor stack :(
+
+    redirect_to etd
+
 
   end
 

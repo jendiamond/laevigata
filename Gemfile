@@ -52,6 +52,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'uglifier', '>= 1.3.0'
 gem 'webpacker', '~> 3.5'
 gem 'whenever', require: false
+gem 'wicked'
 gem 'xray-rails'
 gem 'yard'
 

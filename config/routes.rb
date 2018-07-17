@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     concerns :searchable
   end
 
+  resources :submissions do
+    resources :deposit, controller: 'submissions/deposit'
+    resources :edit, controller: 'submissions/edit'
+  end
+
   devise_for :users, controllers: { omniauth_callbacks: "omniauth_callbacks" }
 
   # Disable these routes if you are using Devise's

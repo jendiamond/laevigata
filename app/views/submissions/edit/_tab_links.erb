@@ -1,0 +1,20 @@
+<div class="row">
+  <ul class="nav nav-tabs nav-justified">
+    <% wizard_steps.each do |breadcrumb| %>
+      <% if past_step?(breadcrumb) %>
+        <li class="nav-item">
+          <%= link_to breadcrumb.to_s.titleize, wizard_path(breadcrumb), class: "nav-link" %>
+        </li>
+      <%- elsif future_step?(breadcrumb) %>
+        <li class="nav-item disabled">
+          <%= link_to breadcrumb.to_s.titleize, wizard_path(breadcrumb), class: "nav-link disabled" %>
+        </li>
+      <%- else #current_step %>
+        <li class="nav-item active">
+          <%= link_to breadcrumb.to_s.titleize, wizard_path(breadcrumb), class: "nav-link active" %>
+        </li>
+      <%- end %>
+    <%- end %>
+  </ul>
+</div>
+

@@ -1,0 +1,25 @@
+<%= render 'tab_links' %>
+
+<p id="notice"><%= notice %></p>
+
+<h2>Review Submission</h2>
+
+<% Submission::SAVED_ATTRIBUTES.each_with_index do |section, index| -%>
+  <% group, fields = section -%>
+
+  <%= link_to "Edit #{group.to_s.titleize}", wizard_path(group), class: "btn btn-warning btn-xs" %>
+
+  <% fields.each do |field| -%>
+    <p>
+      <em><%= field.to_s.humanize %>: </em>
+      <%= @submission.send(field) %>
+    </p>
+
+  <% end -%>
+  <br/>
+
+<% end -%>
+
+<%= link_to 'Edit', edit_submission_path(@submission) %> |
+<%= link_to 'Back', submissions_path %> |
+<%= link_to 'Submit ETD', complete_submission_path(@submission) %>
