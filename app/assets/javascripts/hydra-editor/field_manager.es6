@@ -113,18 +113,27 @@ export class FieldManager {
 
     // If you're in the etd_research_field div AND there are fewer than 3 items selected, add a new entry field
     // OR
+    // If you're in the etd_partnering_agency div AND there are fewer than 3 items selected, add a new entry field
+    // OR
     // If you're in the keywords div, always make a new entry field
     createNewField($activeField) {
       var inResearchFields = !!$activeField.parents("div.etd_research_field").length
       var numberOfResearchFieldsLessThanThree = $('select#etd_research_field').length < 3
+      var inPartneringAgency = !!$activeField.parents("div.etd_partnering_agency").length
+      var numberOfPartneringAgenciesLessThanThree = $('select#etd_partnering_agency').length < 3
+      $('.etd_partnering_agency button.remove').addClass('partnering-agency');
       var inKeywords = !!$activeField.parents("div.etd_keyword").length
-      if ((inResearchFields && numberOfResearchFieldsLessThanThree) || inKeywords) {
+      if ((inResearchFields && numberOfResearchFieldsLessThanThree) || inKeywords || (inPartneringAgency && numberOfPartneringAgenciesLessThanThree)) {
         let $newField = $activeField.clone();
         let $newChildren = this.createNewChildren($newField);
         this.element.trigger("managed_field:add", $newChildren);
 
         if (!!$activeField.parents("div.etd_research_field").length && $('select#etd_research_field').length === 2) {
           $('.etd_research_field button.add').remove();
+        }
+
+        if (!!$activeField.parents("div.etd_partnering_agency").length && $('select#etd_partnering_agency').length === 2) {
+          $('.etd_partnering_agency button.add').remove();
         }
         return $newField;
       }
@@ -148,6 +157,10 @@ export class FieldManager {
         this.element.trigger("managed_field:remove", $field);
         // max of 3 research fields allowed; if user removes one or two, must replace add link
         if ($('select#etd_research_field').length <=2) {
+          this._createAddControl();
+        }
+        // max of 3 partnering agencies allowed; if user removes one or two, must replace add link
+        if ($('select#etd_partnering_agency').length <=2) {
           this._createAddControl();
         }
         this._manageFocus();

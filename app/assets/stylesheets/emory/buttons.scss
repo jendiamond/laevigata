@@ -15,7 +15,11 @@
     margin-left: 1em;
 }
 
-#about_me .btn-link.remove {
+.partnering-agency.btn-link.remove {
+    margin-top: 0;
+}
+
+.remove-chair.btn-link.remove, .remove-member.btn-link.remove {
     margin-top: 23px;
 }
 
