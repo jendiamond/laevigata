@@ -49,8 +49,7 @@ export default class SaveAndSubmit {
     // TODO: change text of submit button to say submit for publication
     axios.get(this.formStore.getUpdateRoute(), { config: { headers: { "Content-Type": "application/json" } } })
     .then(response => {
-      //TODO: confirm this is correct: response.data.in_progress_etd
-      document.getElementById('saved_data').dataset.inProgressEtd = response.data
+      document.getElementById('saved_data').dataset.inProgressEtd = response.data.in_progress_etd
       // populate form in order to use its inputs
       this.formStore.loadSavedData()
       // submit as form data

@@ -193,12 +193,14 @@ export default {
     this.form.loadSavedData();
   },
   methods: {
-    isComplete(tab) {
-      return tab;
+    isComplete(tab_completed) {
+      //console.log('is Complete', tab_completed)
+      return tab_completed;
     },
     allTabsComplete(){
       var complete = [];
       for (var tab in this.form.tabs){
+        //console.log(tab.completed)
         complete.push(this.form.tabs[tab].completed)
       }
       return complete.every(this.isComplete);
@@ -244,7 +246,7 @@ export default {
     readyForReview(){
       // probably will not need this, save will go from embargo tab to review tab naturally
       // all tabs are complete but user has not checked agreement
-      return this.allTabsComplete() && this.form.agreement == false
+      return this.allTabsComplete() && !this.form.agreement
     },
     reviewTabs(){
       var form = document.getElementById("vue_form")

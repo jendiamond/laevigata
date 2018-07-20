@@ -108,7 +108,8 @@ export var formStore = {
        Afer you submit your document(s), your school will be notified and staff will review your submission for acceptance.`,
       disabled: true,
       selected: false,
-      completed: false,
+      //TODO: set this based upon agreement status
+      completed: true,
       currentStep: false,
       step: 7,
       fields: {}
@@ -260,12 +261,13 @@ export var formStore = {
     this.committeeChairs.push({ affilation: affilation, name: name })
   },
   setSelectedDepartment (department) {
-    console.log('set Selected Depart', department)
+    //console.log('set Selected Depart', department)
     this.selectedDepartment = department
   },
   selectedDepartment: '',
   getSelectedDepartment () {
     // in edit state, a user has a savedDepartment until they choose a new one with setSelectedDepartment
+  //  console.log('getSelectedDepartment savedDepartment: ', this.savedData["department"], 'selectedDepartment: ', this.selectedDepartment)
     return this.selectedDepartment.length == 0 ? this.savedData["department"] : this.selectedDepartment
   },
   getSavedDepartment () {
@@ -278,7 +280,10 @@ export var formStore = {
     return this.savedData["graduation_date"]
   },
   getSavedDegree(){
-    return this.savedData["degree"]    
+    return this.savedData["degree"]
+  },
+  getSubfield(){
+    return this.savedData["subfield"]
   },
   getEmbargoLengths () {
     return this.embargoLengths[this.schools.selected]
@@ -298,6 +303,7 @@ export var formStore = {
     })
   },
   getSubfields () {
+    console.log('get subfields selected dept: ', this.selectedDepartment)
     axios.get(this.subfieldEndpoints[this.selectedDepartment]).then(response => {
       this.subfields = response.data
     })
