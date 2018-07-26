@@ -1,6 +1,5 @@
 require 'workflow_setup'
-# Generated via
-#  `rails generate hyrax:work Etd`
+
 class Etd < ActiveFedora::Base
   include ::ProquestBehaviors
   include ::Hyrax::WorkBehavior
@@ -15,6 +14,23 @@ class Etd < ActiveFedora::Base
 
   after_initialize :set_defaults, unless: :persisted?
   before_save :set_research_field_ids, :index_committee_chair_name, :index_committee_members_names
+
+  ##
+  # @!attribute [w] visibility_translator
+  #   @return [VisibilityTranslator]
+  attr_writer :visibility_translator
+
+  ##
+  # @return [VisibilityTranslator]
+  def visibility_translator
+    @visibility_translator ||= VisibilityTranslator.new(obj: self)
+  end
+
+  ##
+  # @return [String]
+  def visibility
+    visibility_translator.visibility
+  end
 
   # Get all attached file sets that are "primary"
   def primary_file_fs

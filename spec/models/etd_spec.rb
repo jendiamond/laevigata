@@ -1,5 +1,3 @@
-# Generated via
-#  `rails generate hyrax:work Etd`
 require 'rails_helper'
 
 RSpec.describe Etd do
@@ -427,8 +425,72 @@ RSpec.describe Etd do
   # An ETD should always have a hidden metadata field saying that the degree_granting_institution is Emory
   describe "#degree_granting_institution" do
     subject { described_class.new }
+
     context "with a new ETD" do
       its(:degree_granting_institution) { is_expected.to eq "http://id.loc.gov/vocabulary/organizations/geu" }
+    end
+  end
+
+  describe '#visibility' do
+    subject(:etd)    { described_class.new }
+    let(:embargo)    { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_EMBARGO }
+    let(:open)       { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PUBLIC }
+    let(:restricted) { Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE }
+
+    it 'is restricted by default' do
+      expect(etd.visibility).to eq restricted
+    end
+
+    context 'when Etd is public' do
+      subject(:etd) { described_class.new(visibility: open) }
+
+      it 'is open' do
+        expect(etd.visibility).to eq open
+      end
+    end
+
+    context 'when Etd is embargoed' do
+      subject(:etd) { FactoryBot.build(:sample_data_with_everything_embargoed) }
+
+      it 'is ALL_EMBARGOED' do
+        expect(etd.visibility)
+          .to eq etd.visibility_translator.class::ALL_EMBARGOED
+      end
+    end
+
+    context 'when Etd is embargoed file-only' do
+      subject(:etd) { FactoryBot.build(:sample_data_with_only_files_embargoed) }
+
+      it 'is FILES_EMBARGOED' do
+        expect(etd.visibility)
+          .to eq etd.visibility_translator.class::FILES_EMBARGOED
+      end
+    end
+
+    context 'when Etd is embargoed at TOC level' do
+      subject(:etd) do
+        FactoryBot.build(:sample_data_with_only_files_embargoed, toc_embargoed: true)
+      end
+
+      it 'is TOC_EMBARGOED' do
+        expect(etd.visibility)
+          .to eq etd.visibility_translator.class::TOC_EMBARGOED
+      end
+    end
+  end
+
+  describe '#visibility_translator' do
+    subject(:etd)         { described_class.new }
+    let(:null_translator) { OpenStruct.new(visibility: :null_visibility) }
+
+    it 'is a VisibilityTranslator by default' do
+      expect(etd.visibility_translator).to be_a VisibilityTranslator
+    end
+
+    it 'is settable' do
+      expect { etd.visibility_translator = null_translator }
+        .to change { etd.visibility }
+        .to :null_visibility
     end
   end
 end
