@@ -50,9 +50,6 @@ class InProgressEtdsController < ApplicationController
     def prepare_etd_data
       # TODO: strong params
       new_data = request.parameters.fetch(:etd, {})
-      # Add temporarily hard-coded data into the new data
-      # TODO: Replace the hard-coded data with real data from the form
-
       add_agreement_data(new_data)
 
       # Add the new data to the existing persisted data
@@ -70,6 +67,8 @@ class InProgressEtdsController < ApplicationController
     end
 
     def add_agreement_data(etd)
+      # user can't submit from the front end without setting this to 1,
+      # so this is correct
       etd["agreement"] = "1"
     end
 
